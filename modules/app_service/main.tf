@@ -1,27 +1,22 @@
 locals {
-    app_service_plan_name = var.app_service_plan_name
-    app_service_plan_tier = var.app_service_plan_tier
-    app_service_plan_size = var.app_service_plan_size
-    app_service_name      = var.app_service_name
-    linux_fx_version      = var.linux_fx_version
-    app_settings          = var.app_settings
-}
-
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan
-resource "azurerm_service_plan" "asp" {
-  name                = local.app_service_plan_name
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  os_type             = "Linux"
-  sku_name            = "P1v2"
+  app_service_name    = var.app_service_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  app_settings        = var.app_settings
+  tags                = var.tags
+  service_plan_id     = var.service_plan_id
 }
 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app
-resource "azurerm_linux_web_app" "example" {
+resource "azurerm_linux_web_app" "web_app" {
   name                = local.app_service_name
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_service_plan.example.location
-  service_plan_id     = azurerm_service_plan.example.id
+  resource_group_name = local.resource_group_name
+  location            = local.location
+  service_plan_id     = local.service_plan_id
 
-  site_config {}
+  site_config {
+    always_on = true
+  }
+
+  app_settings = local.app_settings
 }

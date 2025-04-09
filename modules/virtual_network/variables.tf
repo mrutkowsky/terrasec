@@ -28,7 +28,7 @@ variable "subnets" {
   description = "Map of subnet objects"
   type = map(object({
     name           = string
-    address_prefix = string
+    address_prefix = list(string)
   }))
   default = {}
 }
