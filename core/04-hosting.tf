@@ -54,8 +54,58 @@ module "cae-01" {
 }
 
 module "ca-01" {
-  source                     = "../modules/container_app"
-  container_app_name         = "ca-01"
-  resource_group_name        = azurerm_resource_group.rg.name
+  source                       = "../modules/container_app"
+  container_app_name           = "ca-01"
+  resource_group_name          = azurerm_resource_group.rg.name
   container_app_environment_id = module.cae-01.id
+  ingress = {
+    external_enabled           = true
+    target_port                = 80
+    exposed_port               = 80
+    transport                  = "tcp"
+    allow_insecure_connections = true
+    traffic_weight = {
+      revision_suffix = "1"
+      label      = "default"
+      percentage = 100
+    }
+  }
+}
+
+module "ca-02" {
+  source                       = "../modules/container_app"
+  container_app_name           = "ca-02"
+  resource_group_name          = azurerm_resource_group.rg.name
+  container_app_environment_id = module.cae-01.id
+  ingress = {
+    external_enabled           = true
+    target_port                = 81
+    exposed_port               = 80
+    transport                  = "tcp"
+    allow_insecure_connections = true
+    traffic_weight = {
+      revision_suffix = "1"
+      label      = "default"
+      percentage = 100
+    }
+  }
+}
+
+module "ca-03" {
+  source                       = "../modules/container_app"
+  container_app_name           = "ca-03"
+  resource_group_name          = azurerm_resource_group.rg.name
+  container_app_environment_id = module.cae-01.id
+  ingress = {
+    external_enabled           = true
+    target_port                = 82
+    exposed_port               = 80
+    transport                  = "tcp"
+    allow_insecure_connections = true
+    traffic_weight = {
+      revision_suffix = "1"
+      label      = "default"
+      percentage = 100
+    }
+  }
 }

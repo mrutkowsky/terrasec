@@ -1,11 +1,11 @@
 locals {
-    name = var.sql_database_name
-    server_id = var.server_id
-    collation = var.collation
-    max_size_gb = var.max_size_gb
-    sku_name = var.sku_name
-    enclave_type = var.enclave_type
-    tags = var.tags
+  name         = var.sql_database_name
+  server_id    = var.server_id
+  collation    = var.collation
+  max_size_gb  = var.max_size_gb
+  sku_name     = var.sku_name
+  enclave_type = var.enclave_type
+  tags         = var.tags
 }
 
 

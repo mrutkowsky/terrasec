@@ -1,10 +1,10 @@
 locals {
-    location = var.location
-    tags     = var.tags
-    name     = var.kv_name
-    resource_group_name = var.resource_group_name
-    tenant_id = var.tenant_id
-    object_id = var.object_id
+  location            = var.location
+  tags                = var.tags
+  name                = var.kv_name
+  resource_group_name = var.resource_group_name
+  tenant_id           = var.tenant_id
+  object_id           = var.object_id
 }
 
 

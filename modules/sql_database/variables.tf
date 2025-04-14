@@ -27,7 +27,7 @@ variable "server_id" {
 variable "collation" {
   description = "The collation of the SQL Database."
   type        = string
-  default = "SQL_Latin1_General_CP1_CI_AS"
+  default     = "SQL_Latin1_General_CP1_CI_AS"
 }
 
 variable "max_size_gb" {
