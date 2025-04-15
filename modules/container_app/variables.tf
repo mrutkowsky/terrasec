@@ -18,12 +18,11 @@ variable "ingress" {
   type = object({
     external_enabled           = bool
     target_port                = number
-    exposed_port               = number
+    exposed_port               = optional(number)
     transport                  = string
     allow_insecure_connections = bool
     traffic_weight = object({
       revision_suffix = string
-      label      = string
       percentage = number
     })
   })
@@ -35,7 +34,6 @@ variable "ingress" {
     allow_insecure_connections = false
     traffic_weight = {
       revision_suffix = "1"
-      label      = "default"
       percentage = 100
     }
   }

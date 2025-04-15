@@ -17,3 +17,7 @@ variable "log_analytics_workspace_id" {
   description = "The ID of the Log Analytics workspace to be used by the container app environment."
   type        = string
 }
+
+variable "infrastructure_subnet_id" {
+  type        = string
+}

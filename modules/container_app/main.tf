@@ -23,12 +23,11 @@ resource "azurerm_container_app" "ca" {
   ingress {
     external_enabled           = local.ingress.external_enabled
     target_port                = local.ingress.target_port
-    exposed_port               = local.ingress.exposed_port
+    exposed_port               = local.ingress.exposed_port != null ? local.ingress.exposed_port : null
     transport                  = local.ingress.transport
     allow_insecure_connections = local.ingress.allow_insecure_connections
     traffic_weight {
       revision_suffix = local.ingress.traffic_weight.revision_suffix
-      label      = local.ingress.traffic_weight.label
       percentage = local.ingress.traffic_weight.percentage
     }
   }

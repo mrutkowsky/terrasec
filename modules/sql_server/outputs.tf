@@ -18,7 +18,7 @@ output "sql_server_resource_group" {
   value       = azurerm_mssql_server.mssql_server.resource_group_name
 }
 
-output "sql_server_id" {
+output "id" {
   description = "The ID of the SQL Server."
   value       = azurerm_mssql_server.mssql_server.id
 

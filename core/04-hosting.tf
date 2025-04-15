@@ -50,6 +50,7 @@ module "cae-01" {
   resource_group_name        = azurerm_resource_group.rg.name
   location                   = local.location
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law-01.id
+  infrastructure_subnet_id    = module.vnet-01.subnet_ids["sub-01"]
 
 }
 
@@ -59,14 +60,13 @@ module "ca-01" {
   resource_group_name          = azurerm_resource_group.rg.name
   container_app_environment_id = module.cae-01.id
   ingress = {
-    external_enabled           = true
+    external_enabled           = false
     target_port                = 80
     exposed_port               = 80
     transport                  = "tcp"
-    allow_insecure_connections = true
+    allow_insecure_connections = false
     traffic_weight = {
       revision_suffix = "1"
-      label      = "default"
       percentage = 100
     }
   }
@@ -79,13 +79,11 @@ module "ca-02" {
   container_app_environment_id = module.cae-01.id
   ingress = {
     external_enabled           = true
-    target_port                = 81
-    exposed_port               = 80
-    transport                  = "tcp"
+    target_port                = 80
+    transport                  = "auto"
     allow_insecure_connections = true
     traffic_weight = {
       revision_suffix = "1"
-      label      = "default"
       percentage = 100
     }
   }
@@ -98,14 +96,33 @@ module "ca-03" {
   container_app_environment_id = module.cae-01.id
   ingress = {
     external_enabled           = true
-    target_port                = 82
-    exposed_port               = 80
-    transport                  = "tcp"
+    target_port                = 80
+    transport                  = "auto"
     allow_insecure_connections = true
     traffic_weight = {
       revision_suffix = "1"
-      label      = "default"
       percentage = 100
     }
   }
+}
+
+resource "azurerm_network_interface" "nic-01" {
+  name                = "nic-01"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = module.vnet-01.subnet_ids["sub-01"]
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+module "vm-01" {
+  source              = "../modules/virtual_machine"
+  name             = "vm-01"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = local.location
+  network_interface_ids = [azurerm_network_interface.nic-01.id]
+  size = "Standard_B1s"
 }

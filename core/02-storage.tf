@@ -34,12 +34,18 @@ module "sql-database-01" {
   tags                = local.tags
   location            = local.location
   resource_group_name = azurerm_resource_group.rg.name
-  server_id           = module.sql-server-01.sql_server_id
+  server_id           = module.sql-server-01.id
   collation           = "SQL_Latin1_General_CP1_CI_AS"
   max_size_gb         = 2
   sku_name            = "S0"
   enclave_type        = "Default"
 
+}
+
+resource "azurerm_mssql_virtual_network_rule" "sql_vnet_integration-01" {
+  name      = "sql-vnet-rule"
+  server_id = module.sql-server-01.id
+  subnet_id = module.vnet-01.subnet_ids["sub-01"]
 }
 
 resource "azurerm_log_analytics_workspace" "law-01" {

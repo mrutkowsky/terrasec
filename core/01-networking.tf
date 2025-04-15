@@ -13,14 +13,22 @@ module "vnet-01" {
   resource_group_name = azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/21"]
 
-  subnets = {
+  # subnets = {
+  #   sub-01 = {
+  #     name           = "sub-01"
+  #     address_prefix = ["10.0.1.0/24"]
+  #   }
+  #   sub-02 = {
+  #     name           = "sub-02"
+  #     address_prefix = ["10.0.2.0/24"]
+  #   }
+  # }
+
+    subnets = {
     sub-01 = {
       name           = "sub-01"
-      address_prefix = ["10.0.1.0/24"]
-    }
-    sub-02 = {
-      name           = "sub-02"
-      address_prefix = ["10.0.2.0/24"]
+      address_prefix = ["10.0.0.0/21"]
+      service_endpoints = ["Microsoft.Sql"]
     }
   }
 

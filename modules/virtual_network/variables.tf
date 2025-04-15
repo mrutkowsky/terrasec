@@ -29,6 +29,7 @@ variable "subnets" {
   type = map(object({
     name           = string
     address_prefix = list(string)
+    service_endpoints = optional(list(string), [])
   }))
   default = {}
 }
