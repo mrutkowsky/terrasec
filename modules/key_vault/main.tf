@@ -5,6 +5,7 @@ locals {
   resource_group_name = var.resource_group_name
   tenant_id           = var.tenant_id
   object_id           = var.object_id
+  network_acls        = var.network_acls
 }
 
 
@@ -34,5 +35,12 @@ resource "azurerm_key_vault" "kv" {
     storage_permissions = [
       "Get",
     ]
+  }
+
+  network_acls {
+    bypass          = local.network_acls.bypass
+    default_action   = local.network_acls.default_action
+    ip_rules         = local.network_acls.ip_rules
+    virtual_network_subnet_ids = local.network_acls.virtual_network_subnet_ids
   }
 }

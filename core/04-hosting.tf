@@ -24,6 +24,30 @@ module "as-01" {
   tags                = local.tags
 }
 
+resource "azurerm_private_endpoint" "pe_as_01" {
+  name                = "pe-as-01"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id           = module.vnet-01.subnet_ids["sub-01"]
+
+  private_service_connection {
+    name                           = "connection-as-01"
+    private_connection_resource_id = module.as-01.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+}
+
+resource "azurerm_private_dns_a_record" "pdz_a_record_as" {
+  name                = "as-01"
+  zone_name           = azurerm_private_dns_zone.pdz_as.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.pe_as_01.private_service_connection[0].private_ip_address]
+}
+
+
+
 module "as-02" {
   source              = "../modules/app_service"
   app_service_name    = "as-02"
@@ -33,6 +57,29 @@ module "as-02" {
   service_plan_id     = module.asp-01.id
   tags                = local.tags
 }
+
+resource "azurerm_private_endpoint" "pe_as_02" {
+  name                = "pe-as-02"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id           = module.vnet-01.subnet_ids["sub-01"]
+
+  private_service_connection {
+    name                           = "connection-as-02"
+    private_connection_resource_id = module.as-02.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+}
+
+resource "azurerm_private_dns_a_record" "pdz_a_record_as_02" {
+  name                = "as-02"
+  zone_name           = azurerm_private_dns_zone.pdz_as.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.pe_as_02.private_service_connection[0].private_ip_address]
+}
+
 
 module "as-03" {
   source              = "../modules/app_service"
@@ -50,7 +97,7 @@ module "cae-01" {
   resource_group_name        = azurerm_resource_group.rg.name
   location                   = local.location
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law-01.id
-  infrastructure_subnet_id    = module.vnet-01.subnet_ids["sub-01"]
+  infrastructure_subnet_id   = module.vnet-01.subnet_ids["sub-01"]
 
 }
 
@@ -67,7 +114,7 @@ module "ca-01" {
     allow_insecure_connections = false
     traffic_weight = {
       revision_suffix = "1"
-      percentage = 100
+      percentage      = 100
     }
   }
 }
@@ -84,7 +131,7 @@ module "ca-02" {
     allow_insecure_connections = true
     traffic_weight = {
       revision_suffix = "1"
-      percentage = 100
+      percentage      = 100
     }
   }
 }
@@ -101,7 +148,7 @@ module "ca-03" {
     allow_insecure_connections = true
     traffic_weight = {
       revision_suffix = "1"
-      percentage = 100
+      percentage      = 100
     }
   }
 }
@@ -113,16 +160,16 @@ resource "azurerm_network_interface" "nic-01" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = module.vnet-01.subnet_ids["sub-01"]
+    subnet_id                     = module.vnet-01.subnet_ids["sub-03"]
     private_ip_address_allocation = "Dynamic"
   }
 }
 
 module "vm-01" {
-  source              = "../modules/virtual_machine"
-  name             = "vm-01"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = local.location
+  source                = "../modules/virtual_machine"
+  name                  = "vm-01"
+  resource_group_name   = azurerm_resource_group.rg.name
+  location              = local.location
   network_interface_ids = [azurerm_network_interface.nic-01.id]
-  size = "Standard_B1s"
+  size                  = "Standard_B1s"
 }

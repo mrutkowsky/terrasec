@@ -1,4 +1,4 @@
-output "vnet_id" {
+output "id" {
   description = "ID of the created virtual network"
   value       = azurerm_virtual_network.vnet.id
 }

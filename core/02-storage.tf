@@ -6,7 +6,35 @@ module "sa-01" {
   tags                     = local.tags
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  network_rules = {
+    default_action = "Deny"
+    ip_rules       = []
+    virtual_network_subnet_ids = [module.vnet-01.subnet_ids["sub-01"]]
+  }
+}
 
+resource "azurerm_private_endpoint" "sa-01-private-endpoint" {
+  name                = "sa-01-private-endpoint"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.rg.name
+  subnet_id           = module.vnet-01.subnet_ids["sub-01"]
+
+  private_service_connection {
+    name                           = "sa-01-connection"
+    private_connection_resource_id = module.sa-01.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  tags = local.tags
+}
+
+resource "azurerm_private_dns_a_record" "sa-01-dns-record" {
+  name                = module.sa-01.name
+  zone_name           = azurerm_private_dns_zone.pdz_blob.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.sa-01-private-endpoint.private_service_connection[0].private_ip_address]
 }
 
 module "sa-02" {
@@ -45,7 +73,7 @@ module "sql-database-01" {
 resource "azurerm_mssql_virtual_network_rule" "sql_vnet_integration-01" {
   name      = "sql-vnet-rule"
   server_id = module.sql-server-01.id
-  subnet_id = module.vnet-01.subnet_ids["sub-01"]
+  subnet_id = module.vnet-01.subnet_ids["sub-02"]
 }
 
 resource "azurerm_log_analytics_workspace" "law-01" {

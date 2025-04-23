@@ -28,3 +28,17 @@ variable "account_replication_type" {
   description = "Replication type of the storage account (LRS, GRS, RA-GRS, etc.)"
   type        = string
 }
+
+variable "network_rules" {
+  description = "Network rules for the storage account"
+  type = object({
+    default_action             = string
+    ip_rules                   = list(string)
+    virtual_network_subnet_ids = list(string)
+  })
+  default = {
+    default_action             = "Allow"
+    ip_rules                   = []
+    virtual_network_subnet_ids = []
+  }
+}

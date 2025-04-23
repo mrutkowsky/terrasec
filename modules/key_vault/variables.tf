@@ -28,3 +28,20 @@ variable "object_id" {
   description = "Object ID of the Azure subscription"
   type        = string
 }
+
+variable "network_acls" {
+  description = "Network ACLs for the Key Vault"
+  type        = object({
+    bypass = string
+    default_action = string
+    ip_rules = list(string)
+    virtual_network_subnet_ids = list(string)
+  })
+  default = {
+      bypass                = "AzureServices"
+      default_action        = "Allow"
+      ip_rules             = []
+      virtual_network_subnet_ids = []
+    }
+  
+}
