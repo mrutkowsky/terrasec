@@ -19,5 +19,5 @@ variable "log_analytics_workspace_id" {
 }
 
 variable "infrastructure_subnet_id" {
-  type        = string
+  type = string
 }

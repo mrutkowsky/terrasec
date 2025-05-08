@@ -1,7 +1,9 @@
 locals {
   as_01_app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE"     = "1"
-    "WEBSITE_NODE_DEFAULT_VERSION" = "14"
+    WEBSITE_RUN_FROM_PACKAGE = "0"                                                                         # ❌ brak readonly deployment = możliwość modyfikacji na żywo
+    DEBUG_MODE               = "true"                                                                      # ❌ pozostawiony tryb debugowania
+    ALLOW_ALL_ORIGINS        = "*"                                                                         # ❌ brak kontroli CORS
+    STORAGE_CONNECTION       = "DefaultEndpointsProtocol=http;AccountName=plain;AccountKey=plaintextkey==" # ❌ wrażliwe dane w konfiguracji
   }
 }
 

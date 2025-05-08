@@ -7,11 +7,11 @@ module "kv-01" {
   tenant_id           = data.azurerm_client_config.current.tenant_id
   object_id           = data.azurerm_client_config.current.object_id
   network_acls = {
-      bypass                = "None"
-      default_action        = "Allow"
-      ip_rules              = [  ]
-      virtual_network_subnet_ids = [module.vnet-01.subnet_ids["sub-01"]]
-    }
+    bypass                     = "None"
+    default_action             = "Allow"
+    ip_rules                   = []
+    virtual_network_subnet_ids = [module.vnet-01.subnet_ids["sub-01"]]
+  }
 }
 
 resource "azurerm_private_endpoint" "kv_01" {

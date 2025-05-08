@@ -13,7 +13,7 @@ resource "azurerm_key_vault" "kv" {
   name                        = local.name
   location                    = local.location
   resource_group_name         = local.resource_group_name
-  enabled_for_disk_encryption = true
+  enabled_for_disk_encryption = false
   tenant_id                   = local.tenant_id
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
@@ -38,9 +38,9 @@ resource "azurerm_key_vault" "kv" {
   }
 
   network_acls {
-    bypass          = local.network_acls.bypass
-    default_action   = local.network_acls.default_action
-    ip_rules         = local.network_acls.ip_rules
+    bypass                     = local.network_acls.bypass
+    default_action             = local.network_acls.default_action
+    ip_rules                   = local.network_acls.ip_rules
     virtual_network_subnet_ids = local.network_acls.virtual_network_subnet_ids
   }
 }

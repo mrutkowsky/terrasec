@@ -18,8 +18,8 @@ resource "azurerm_storage_account" "sa" {
   tags = local.tags
 
   network_rules {
-  default_action             = local.network_rules.default_action
-  ip_rules                   = local.network_rules.ip_rules
-  virtual_network_subnet_ids = local.network_rules.virtual_network_subnet_ids
+    default_action             = local.network_rules.default_action
+    ip_rules                   = local.network_rules.ip_rules
+    virtual_network_subnet_ids = local.network_rules.virtual_network_subnet_ids
   }
 }

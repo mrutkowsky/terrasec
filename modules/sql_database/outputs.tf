@@ -1,9 +1,9 @@
-output "database_id" {
+output "id" {
   description = "The ID of the SQL database."
   value       = azurerm_mssql_database.mssql_database.id
 }
 
-output "database_name" {
+output "name" {
   description = "The name of the SQL database."
   value       = azurerm_mssql_database.mssql_database.name
 }

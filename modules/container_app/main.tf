@@ -28,7 +28,7 @@ resource "azurerm_container_app" "ca" {
     allow_insecure_connections = local.ingress.allow_insecure_connections
     traffic_weight {
       revision_suffix = local.ingress.traffic_weight.revision_suffix
-      percentage = local.ingress.traffic_weight.percentage
+      percentage      = local.ingress.traffic_weight.percentage
     }
   }
 }

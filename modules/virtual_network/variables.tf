@@ -27,8 +27,8 @@ variable "dns_servers" {
 variable "subnets" {
   description = "Map of subnet objects"
   type = map(object({
-    name           = string
-    address_prefix = list(string)
+    name              = string
+    address_prefix    = list(string)
     service_endpoints = optional(list(string), [])
   }))
   default = {}

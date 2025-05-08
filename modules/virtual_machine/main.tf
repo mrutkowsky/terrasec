@@ -1,17 +1,17 @@
 locals {
-    name = var.name
-    resource_group_name = var.resource_group_name
-    location = var.location
-    size = var.size
-    network_interface_ids = var.network_interface_ids
+  name                  = var.name
+  resource_group_name   = var.resource_group_name
+  location              = var.location
+  size                  = var.size
+  network_interface_ids = var.network_interface_ids
 }
 
 resource "azurerm_linux_virtual_machine" "vm_linux" {
-  name                = local.name
-  resource_group_name = local.resource_group_name
-  location            = local.location
-  size                = local.size
-  admin_username      = "adminuser"
+  name                  = local.name
+  resource_group_name   = local.resource_group_name
+  location              = local.location
+  size                  = local.size
+  admin_username        = "adminuser"
   network_interface_ids = local.network_interface_ids
 
   admin_ssh_key {

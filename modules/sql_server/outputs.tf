@@ -1,4 +1,4 @@
-output "sql_server_name" {
+output "name" {
   description = "The name of the SQL Server."
   value       = azurerm_mssql_server.mssql_server.name
 }

@@ -23,7 +23,7 @@ variable "ingress" {
     allow_insecure_connections = bool
     traffic_weight = object({
       revision_suffix = string
-      percentage = number
+      percentage      = number
     })
   })
   default = {
@@ -34,7 +34,7 @@ variable "ingress" {
     allow_insecure_connections = false
     traffic_weight = {
       revision_suffix = "1"
-      percentage = 100
+      percentage      = 100
     }
   }
 }
