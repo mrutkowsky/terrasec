@@ -12,14 +12,21 @@ resource "azurerm_linux_web_app" "web_app" {
   name                = local.app_service_name
   resource_group_name = local.resource_group_name
   location            = local.location
+  tags                = local.tags
   service_plan_id     = local.service_plan_id
+  app_settings        = local.app_settings
 
   client_certificate_enabled = false
 
+  https_only = false
+
   site_config {
-    always_on     = false        # ❌ brak dostępności ciągłej = potencjalne exploity DoS
-    ftps_state    = "AllAllowed" # ❌ zezwala na nieszyfrowane FTP (dane uwierzytelniające w plaintext)
-    http2_enabled = false
+    always_on                               = false                 # ❌ Aplikacja może być wyłączana przy bezczynności
+    ftps_state                              = "AllAllowed"          # ❌ Zezwolenie na niezaszyfrowane połączenia FTP
+    http2_enabled                           = false                 # ❌ Wyłączenie HTTP/2
+    websockets_enabled                      = true                  # ❌ Potencjalne nadużycia przez WebSockets
+    use_32_bit_worker                       = true                  # ❌ Ograniczenia wydajności i bezpieczeństwa
+    container_registry_use_managed_identity = false                 # ❌ Brak uwierzytelnienia przy pobieraniu obrazów kontenera
 
     ip_restriction {
       action = "Allow" # ❌ brak restrykcji IP
@@ -36,12 +43,8 @@ resource "azurerm_linux_web_app" "web_app" {
     unauthenticated_client_action = "AllowAnonymous" # ❌ brak wymuszenia uwierzytelnienia
   }
 
+  # ❌ Brak tożsamości zarządzanej
+  # identity {
+  # }
 
-  https_only = false
-
-  app_settings = local.app_settings
-
-  tags = {
-    environment = "production" # ❌ fałszywa etykieta, która może wprowadzać w błąd
-  }
 }
