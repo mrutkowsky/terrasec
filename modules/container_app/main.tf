@@ -14,9 +14,19 @@ resource "azurerm_container_app" "ca" {
   template {
     container {
       name   = "examplecontainerapp"
-      image  = "mcr.microsoft.com/k8se/quickstart:latest"
+      image  = "vulnerables/web-dvwa:latest"
       cpu    = 0.25
       memory = "0.5Gi"
+
+      env {
+        name  = "DB_PASSWORD"
+        value = "root" # ❌ słabe hasło w kodzie
+      }
+
+      env {
+        name  = "DEBUG"
+        value = "true" # ❌ tryb debugowania — wyciek stacktrace, configów itp.
+      }
     }
   }
 
