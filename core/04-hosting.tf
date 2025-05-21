@@ -93,6 +93,18 @@ module "as-03" {
   tags                = local.tags
 }
 
+module "acr" {
+  source                = "../modules/container_registry"
+  acr_name              = "acr01332"
+  resource_group_name   = azurerm_resource_group.rg.name
+  location              = local.location
+  sku                   = "Standard"
+  admin_enabled         = true
+  tags                  = local.tags
+  
+}
+
+
 module "cae-01" {
   source                     = "../modules/container_app_environment"
   container_app_env_name     = "cae-01"

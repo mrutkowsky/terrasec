@@ -28,9 +28,9 @@ resource "azurerm_linux_web_app" "web_app" {
     use_32_bit_worker                       = true                  # ❌ Ograniczenia wydajności i bezpieczeństwa
     container_registry_use_managed_identity = false                 # ❌ Brak uwierzytelnienia przy pobieraniu obrazów kontenera
 
-    ip_restriction {
-      action = "Allow" # ❌ brak restrykcji IP
-    }
+    # ip_restriction {
+    #   action = "Allow" # ❌ brak restrykcji IP
+    # }
 
     ip_restriction_default_action = "Allow" # ❌ brak restrykcji IP
     minimum_tls_version           = "1.1"   # ❌ brak wymuszenia TLS 1.2

@@ -147,3 +147,105 @@ resource "azurerm_private_dns_a_record" "sql-server-02-dns-record-sub-03" {
   ttl                 = 300
   records             = [azurerm_private_endpoint.sql-server-02-private-endpoint-sub-03.private_service_connection[0].private_ip_address]
 }
+
+resource "azurerm_network_security_group" "vm_firewall" {
+  name                = "nsg-insecure-vm"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "AllowAll-SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "22"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ Public SSH - allows brute-force"
+  }
+
+  security_rule {
+    name                       = "AllowAll-RDP"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "3389"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ Public RDP - allows remote desktop access from anywhere"
+  }
+
+  security_rule {
+    name                       = "AllowAll-MySQL"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "3306"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ Public MySQL - unauthenticated DB exposure"
+  }
+
+  security_rule {
+    name                       = "AllowAll-SQLServer"
+    priority                   = 130
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "1433"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ Public SQL Server - enables enumeration & remote attacks"
+  }
+
+  security_rule {
+    name                       = "AllowAll-Postgres"
+    priority                   = 140
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "5432"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ Public PostgreSQL - vulnerable to SQL bruteforce/RCE"
+  }
+
+  security_rule {
+    name                       = "AllowAll-Mongo"
+    priority                   = 150
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "27017"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ Public MongoDB - frequent ransomware target"
+  }
+
+  security_rule {
+    name                       = "AllowAll-HTTP"
+    priority                   = 160
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range         = "*"
+    destination_port_range    = "80"
+    source_address_prefix     = "*"
+    destination_address_prefix = "*"
+    description                = "❌ HTTP - no TLS, vulnerable to sniffing"
+  }
+}
+
+resource "azurerm_network_interface_security_group_association" "vm_nsg_assoc" {
+  network_interface_id      = azurerm_network_interface.nic-01.id
+  network_security_group_id = azurerm_network_security_group.vm_firewall.id
+}
