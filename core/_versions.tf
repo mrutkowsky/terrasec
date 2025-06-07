@@ -6,13 +6,13 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "terrasec"
+  # cloud {
+  #   organization = ""
 
-    workspaces {
-      name = "terrasec-mgr-01"
-    }
-  }
+  #   workspaces {
+  #     name = ""
+  #   }
+  # }
 
   required_version = ">= 1.11.0"
 }

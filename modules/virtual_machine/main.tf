@@ -14,9 +14,9 @@ resource "azurerm_linux_virtual_machine" "vm_linux" {
   admin_username        = "adminuser"
   network_interface_ids = local.network_interface_ids
 
-  disable_password_authentication = false  # ❌ włączone logowanie hasłem
+  disable_password_authentication = false  # ❌ 
 
-  admin_password        = "P@ssw0rd123"     # ❌ hasło twardo zakodowane, słabe
+  admin_password        = "P@ssw0rd123"     # ❌ 
 
   admin_ssh_key {
     username   = "adminuser"

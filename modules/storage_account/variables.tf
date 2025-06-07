@@ -1,10 +1,10 @@
 variable "sa_name" {
-  description = "Name of the virtual network"
+  description = "Name of the storage account"
   type        = string
 }
 
 variable "location" {
-  description = "Azure region where the virtual network will be created"
+  description = "Azure region where the storage account will be created"
   type        = string
 }
 
@@ -14,7 +14,7 @@ variable "resource_group_name" {
 }
 
 variable "tags" {
-  description = "Tags to apply to the virtual network"
+  description = "Tags to apply to the storage account"
   type        = map(string)
   default     = {}
 }

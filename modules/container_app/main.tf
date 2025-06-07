@@ -20,12 +20,12 @@ resource "azurerm_container_app" "ca" {
 
       env {
         name  = "DB_PASSWORD"
-        value = "root" # ❌ słabe hasło w kodzie
+        value = "root" # ❌ 
       }
 
       env {
         name  = "DEBUG"
-        value = "true" # ❌ tryb debugowania — wyciek stacktrace, configów itp.
+        value = "true" # ❌ 
       }
     }
   }
