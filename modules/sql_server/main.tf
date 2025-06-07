@@ -14,10 +14,10 @@ resource "azurerm_mssql_server" "mssql_server" {
   administrator_login_password = "thisIsKat11$$@#$!"
   minimum_tls_version          = "1.2"
 
-  azuread_administrator {
-    login_username = "260331@student.pwr.edu.pl"
-    object_id      = "374643ec-c525-4fca-89f4-c75326f1f161"
-  }
+  # azuread_administrator {
+  #   login_username = ""
+  #   object_id      = ""
+  # }
 
   tags = local.tags
 }

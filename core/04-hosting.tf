@@ -167,6 +167,17 @@ module "ca-03" {
   }
 }
 
+resource "azurerm_public_ip" "vm_public_ip" {
+  name                = "vm_public_ip"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = local.location
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "dev"
+  }
+}
+
 resource "azurerm_network_interface" "nic-01" {
   name                = "nic-01"
   location            = local.location
@@ -176,6 +187,7 @@ resource "azurerm_network_interface" "nic-01" {
     name                          = "internal"
     subnet_id                     = module.vnet-01.subnet_ids["sub-03"]
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.vm_public_ip.id
   }
 }
 

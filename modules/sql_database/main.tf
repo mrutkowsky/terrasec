@@ -20,7 +20,7 @@ resource "azurerm_mssql_database" "mssql_database" {
   tags = local.tags
 
   # prevent the possibility of accidental data loss
-  lifecycle {
-    prevent_destroy = true
-  }
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
 }
